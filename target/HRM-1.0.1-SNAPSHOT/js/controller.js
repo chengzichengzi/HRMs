@@ -6,7 +6,7 @@ app.controller("navaCtrl",["$scope",function ($scope) {
 //全部emp子页控制器
 app.controller("empCtrl",["$scope","$http","empsService",function($scope,$http,empsService){
     //找到全部emp
-    $http.get("http://localhost:8080/HRM/EmpFindAllServlet").then(function(res){
+    $http.get("http://localhost:8080/HRM/find_All_Emp.do").then(function(res){
         $scope.emps = res.data.data;
     },function(err){
         sessionStorage.errCode = "404";
@@ -27,7 +27,7 @@ app.controller("empCtrl",["$scope","$http","empsService",function($scope,$http,e
 
     //删除
     $scope.deleteBtn = function (empno) {
-        $http.post("http://localhost:8080/HRM/EmpDeleteServlet?empno="+empno).then(function(res){
+        $http.get("http://localhost:8080/HRM/delete_Emp.do?empno="+empno).then(function(res){
             var result = res.data;
             if(result.code == 200){
                 alert(result.msg);
@@ -53,7 +53,7 @@ app.controller("empCtrl",["$scope","$http","empsService",function($scope,$http,e
 //底部查询控制器
 app.controller("searchCtrl",["$scope","$http","empsService",function($scope,$http,empsService){
     //根据条件查找
-    var url = "http://localhost:8080/HRM/EmpFindAllServlet";
+    var url = "http://localhost:8080/HRM/find_All_Emp.do";
     var id_link = null;
     var name_link = null;
     $scope.queryBtn = function () {
@@ -77,9 +77,9 @@ app.controller("searchCtrl",["$scope","$http","empsService",function($scope,$htt
 
         //判断查找类型并拼接url用于get请求
         if($scope.queryType == "empno"){
-            url = "http://localhost:8080/HRM/EmpFindByIdServlet?empno="+$scope.queryCon;
+            url = "http://localhost:8080/HRM/find_By_Id.do?empno="+$scope.queryCon;
         }else if($scope.queryType == "ename"){
-            url = "http://localhost:8080/HRM/EmpFindByNameServlet?ename="+$scope.queryCon;
+            url = "http://localhost:8080/HRM/find_By_Name.do?ename="+$scope.queryCon;
         }
         //请求数据
         $http.get(url).then(function(res){
@@ -115,7 +115,7 @@ app.controller("queryByCtrl",["$scope","$http","empsService",function($scope,$ht
 
     //删除
     $scope.deleteBtn = function (empno) {
-        $http.post("http://localhost:8080/HRM/EmpDeleteServlet?empno="+empno).then(function(res){
+        $http.get("http://localhost:8080/HRM/delete_Emp.do?empno="+empno).then(function(res){
             var result = res.data;
             if(result.code == 200){
                 alert(result.msg);

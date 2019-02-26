@@ -30,15 +30,13 @@
 		$("#username").focus().blur(function(ev){
 			$.ajax({
 				type:"get",
-				url:"http://localhost:8080/HRM/UserExsitServlet",
+				url:"http://localhost:8080/HRM/user_Exsit.do",
 				async:true,
 				data:{
 					username:$(ev.target).val()
 				},
 				success:function(res){
-					var jsonResult = JSON.parse(res);
-					console.log(jsonResult);
-					if(jsonResult.code == 200){
+					if(res.code == 200){
 						$("#userExsitMsg").html("&nbsp;用户名重复").css({"color":"red"});
 					}else{
 						$("#userExsitMsg").html("&nbsp;用户名可用").css({"color":"green"});
@@ -52,20 +50,19 @@
 	$("#btn_conform").click(function(){
 		$.ajax({
 			type:"post",
-			url:"http://localhost:8080/HRM/UserRegistServlet",
+			url:"http://localhost:8080/HRM/user_Regist.do",
 			async:true,
 			data:{
 				"username":$("input[name='username']").val(),
 				"userpassword1":$("input[name='userpassword1']").val(),
 				"userpassword2":$("input[name='userpassword2']").val()
 			},success:function(res){
-				var jsonResult = JSON.parse(res);
-				if(jsonResult.code == 200){
+				if(res.code == 200){
 					window.location.href="http://localhost:8080/HRM/index.html";
 
 				}else{
-					sessionStorage.errCode = jsonResult.code;
-					sessionStorage.errMsg = jsonResult.msg;
+					sessionStorage.errCode = res.code;
+					sessionStorage.errMsg = res.msg;
 					window.location.href="http://localhost:8080/HRM/error.html";
 				}
 			}

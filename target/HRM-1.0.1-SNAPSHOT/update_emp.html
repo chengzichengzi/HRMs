@@ -18,15 +18,15 @@
         </tr>
         <tr>
             <td>入职日期</td>
-            <td>{{updateEmp.hiredate}}<input type="hidden" name="hiredate" value={{updateEmp.hiredate}}/></td>
+            <td id="hiredate" name="hiredate">{{updateEmp.hiredate}}</td>
         </tr>
         <tr>
             <td>薪金</td>
-            <td id="sal" name="sal" value={{updateEmp.sal}}>{{updateEmp.sal}}</td>
+            <td id="sal" name="sal">{{updateEmp.sal}}</td>
         </tr>
         <tr>
             <td>奖金</td>
-            <td id="comm" name="comm" value={{updateEmp.comm}}>{{updateEmp.comm}}</td>
+            <td id="comm" name="comm">{{updateEmp.comm}}</td>
         </tr>
         <tr>
             <td>部门编号</td>
@@ -50,21 +50,21 @@
         $("#updateBtn").click(function () {
             $.ajax({
                 type: "post",
-                url: "http://localhost:8080/HRM/EmpUpdateServlet",
+                url: "http://localhost:8080/HRM/update_emp.do",
                 async: true,
-                data: {
+                contentType : "application/json;charset=utf-8",
+                data: JSON.stringify({
                     empno: $("td[name='empno']").html(),
                     ename: $("input[name='ename']").val(),
                     job: $("input[name='job']").val(),
                     mgr: $("input[name='mgr']").val(),
-                    hiredate: $("input[name='hiredate']").val(),
+                    hiredate: $("td[name='hiredate']").html(),
                     sal: $("td[name='sal']").html(),
                     comm: $("td[name='comm']").html(),
                     deptno: $("select[name='deptno']").val()
-                },
+                }),
                 success: function (res) {
-                    var data = JSON.parse(res);
-                    if (data.code == 200) {
+                    if (res.code == 200) {
                         window.location.href = "http://localhost:8080/HRM/emp_main.html";
                     } else {
                         sessionStorage.errCode = "404";

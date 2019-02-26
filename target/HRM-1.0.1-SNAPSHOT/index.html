@@ -34,18 +34,17 @@
 		$("#username").focus().blur(function(ev){
 			$.ajax({
 				type:"get",
-				url:"http://loc	alhost:8080/HRM/UserExsitServlet",
+				url:"http://loc	alhost:8080/HRM/user_Exsit.do",
 				async:true,
 				data:{
 					username:$(ev.target).val()
 				},
 				success:function(res){
-					var jsonResult = JSON.parse(res);
-					console.log(jsonResult);
-					if(jsonResult.code == 200){
+					console.log(res);
+					if(res.code == 200){
 						$("#userExsitMsg").html("存在该用户").css({"color":"green"});
 					}else{
-						$("#userExsitMsg").html(jsonResult.code+":"+jsonResult.msg).css({"color":"red"});
+						$("#userExsitMsg").html(res.code+":"+res.msg).css({"color":"red"});
 					}
 				}
 			});
@@ -55,20 +54,19 @@
 		$("#loginBtn").click(function(){
 			$.ajax({
 				type:"post",
-				url:"http://localhost:8080/HRM/UserLoginServlet",
+				url:"http://localhost:8080/HRM/user_Login.do",
 				async:true,
 				data:{
 					"username":$("input[name='username']").val(),
 					"userpassword":$("input[name='userpassword']").val()
 				},success:function(res){
-					var jsonResult = JSON.parse(res);
-					if(jsonResult.code == 200){
-						sessionStorage.username = jsonResult.data.username;
+					if(res.code == 200){
+						sessionStorage.username = res.data.username;
 						window.location.href="http://localhost:8080/HRM/emp_main.html";
 
 					}else{
-						sessionStorage.errCode = jsonResult.code;
-						sessionStorage.errMsg = jsonResult.msg;
+						sessionStorage.errCode = res.code;
+						sessionStorage.errMsg = res.msg;
 						window.location.href="http://localhost:8080/HRM/error.html";
 					}
 				}
